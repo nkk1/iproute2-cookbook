@@ -1,0 +1,27 @@
+sudo: required
+dist: trusty
+
+addons:
+  apt:
+    sources:
+      - chef-current-trusty
+    packages:
+      - chefdk
+
+install: echo "skip bundle install"
+
+branches:
+  only:
+    - master
+
+script: kitchen test
+
+env:
+  matrix:
+    - INSTANCE=default-centos-6
+    - INSTANCE=default-centos-7
+
+before_script:
+  - chef --version
+  - cookstyle --version
+  - foodcritic --version
