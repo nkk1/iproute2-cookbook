@@ -36,7 +36,8 @@ doc/
 
 # chef stuff
 Berksfile.lock
-.kitchen
+.kitchen/
+.kitchen/*
 .kitchen.local.yml
 vendor/
 .coverage/
