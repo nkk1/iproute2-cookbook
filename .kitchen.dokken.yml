@@ -1,6 +1,6 @@
 driver:
   name: dokken
-  privileged: true # because Docker and SystemD/Upstart
+  privileged: true
   chef_version: current
 
 transport:
@@ -13,6 +13,7 @@ provisioner:
 verifier:
   name: inspec
 
+platforms:
 - name: centos-6
   driver:
     image: centos:6
@@ -29,7 +30,14 @@ verifier:
     intermediate_instructions:
       - RUN yum -y install lsof which systemd-sysv initscripts wget net-tools
 
+- name: fedora-latest
+  driver:
+    image: fedora:latest
+    pid_one_command: /usr/lib/systemd/systemd
+    intermediate_instructions:
+      - RUN dnf -y install which systemd-sysv initscripts wget net-tools
+
 suites:
   - name: default
     run_list:
-      - recipe[interface_test]
+      - recipe[interface_test::default]
