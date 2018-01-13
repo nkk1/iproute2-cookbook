@@ -14,7 +14,7 @@ branches:
   only:
     - master
 
-script: kitchen test
+script: KITCHEN_LOCAL_YAML=.kitchen.dokken.yml kitchen verify ${INSTANCE}
 
 env:
   matrix:
