@@ -25,3 +25,11 @@ before_script:
   - chef --version
   - cookstyle --version
   - foodcritic --version
+
+matrix:
+  include:
+    - script:
+      - chef exec delivery local all
+      env:
+        - UNIT_AND_LINT=1
+        - CHEF_FIPS=''
