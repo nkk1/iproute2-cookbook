@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'interface::default' do
+describe 'iproute2::default' do
   let(:chef_run) do
     ChefSpec::ServerRunner.new(platform: 'centos', version: '6.9').converge(described_recipe)
   end

@@ -3,5 +3,5 @@ source 'https://supermarket.chef.io'
 metadata
 
 group :integration do
-  cookbook 'interface_test', path: 'test/fixtures/interface_test'
+  cookbook 'iproute2_test', path: 'test/fixtures/iproute2_test'
 end
