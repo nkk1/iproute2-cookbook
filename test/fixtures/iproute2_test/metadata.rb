@@ -1,8 +1,8 @@
-name              'interface_test'
+name              'iproute2_test'
 maintainer        'karthik'
 maintainer_email  'kumarkarthikn@gmail.com'
 license           'All rights reserved'
-description       'Tests interface cookbook'
+description       'Tests iproute2 cookbook'
 version           '1.0'
 
-depends 'interface'
+depends 'iproute2'
