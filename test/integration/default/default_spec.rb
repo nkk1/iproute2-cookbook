@@ -5,11 +5,7 @@ describe package('iproute') do
 end
 
 describe interface('dumb0') do
-  it { should be_down }
-end
-
-describe interface('dumb0') do
-  it { should_not be_down }
+  it { should_not be_up }
 end
 
 describe file('/sys/class/net/dumb1/mtu') do
