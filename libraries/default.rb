@@ -46,7 +46,7 @@ module IPRoute
     end
 
     def mtu=(new_mtu)
-      puts("#{ip} link set dev #{@dev} mtu #{new_mtu}")
+      shellout("#{ip} link set dev #{@dev} mtu #{new_mtu}")
     end
 
     def mtu
