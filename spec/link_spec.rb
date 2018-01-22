@@ -13,19 +13,64 @@ describe 'interface state' do
   let(:shellout) { double('shellout') }
 
   before do
-    allow(File).to receive(:read).and_return("eth0:\n")
     allow(shellout).to receive(:run_command)
     allow(shellout).to receive(:error?)
     allow(shellout).to receive(:exitstatus).and_return(0)
   end
 
-  context 'good interface' do
+  context 'when no network namespace' do
     let(:link) { IPRoute::Link.new('eth0') }
     before do
-      cmd = '/sbin/ip -o link show eth0'
+      cmd = ' /sbin/ip -o link show eth0'
       allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
       allow(shellout).to receive(:stdout).and_return(ip_link['eth'])
-      link = IPRoute::Link.new('eth0')
+    end
+
+    it 'returns interface state' do
+      expect(link.state).to eq('up')
+    end
+
+    it 'returns true if up' do
+      expect(link.up?).to be_truthy
+    end
+
+    it 'return false if up' do
+      expect(link.down?).to be_falsey
+    end
+
+    it 'returns interface mtu' do
+      expect(link.mtu).to eq(1500)
+    end
+
+    it 'returns down interface' do
+      cmd = ' /sbin/ip -o link show eth0'
+      allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
+      allow(shellout).to receive(:stdout).and_return(ip_link['eth_down'])
+      expect(link.state).to eq('down')
+      expect(link.down?).to be_truthy
+    end
+
+    it 'returns existence in root netns' do
+      cmd = '/sbin/ip -o link'
+      allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
+      allow(shellout).to receive(:stdout).and_return(ip_link.values.join("\n"))
+      expect(link.exist?).to be_truthy
+    end
+
+    it 'returns existencce in any netns' do
+      cmd = ' /sbin/ip -o link'
+      allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
+      allow(shellout).to receive(:stdout).and_return(ip_link.values.join("\n"))
+      expect(link.exist_in_netns?).to be_truthy
+    end
+  end
+
+  context 'when network namespace' do
+    let(:link) { IPRoute::Link.new('eth0', 'vpn') }
+    before do
+      cmd = 'ip netns exec vpn /sbin/ip -o link show eth0'
+      allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
+      allow(shellout).to receive(:stdout).and_return(ip_link['eth'])
       expect(link.state).to eq('up')
     end
 
@@ -45,8 +90,26 @@ describe 'interface state' do
       expect(link.mtu).to eq(1500)
     end
 
-    it 'returns if interface exists' do
+    it 'returns down interface' do
+      cmd = 'ip netns exec vpn /sbin/ip -o link show eth0'
+      allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
+      allow(shellout).to receive(:stdout).and_return(ip_link['eth_down'])
+      expect(link.state).to eq('down')
+      expect(link.down?).to be_truthy
+    end
+
+    it 'returns existence in root netns' do
+      cmd = '/sbin/ip -o link'
+      allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
+      allow(shellout).to receive(:stdout).and_return(ip_link.values.join("\n"))
       expect(link.exist?).to be_truthy
+    end
+
+    it 'returns existencce in any netns' do
+      cmd = 'ip netns exec vpn /sbin/ip -o link'
+      allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
+      allow(shellout).to receive(:stdout).and_return(ip_link.values.join("\n"))
+      expect(link.exist_in_netns?).to be_truthy
     end
   end
 end

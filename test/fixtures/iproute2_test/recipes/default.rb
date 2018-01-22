@@ -12,3 +12,5 @@ ip_link 'dumb1' do
   mtu 1400
   state 'up'
 end
+
+include_recipe 'iproute2_test::netns' if shell_out('/sbin/ip netns').exitstatus == 0
