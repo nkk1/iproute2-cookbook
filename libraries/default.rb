@@ -1,32 +1,69 @@
 require 'mixlib/shellout'
 
 module IPRoute
-  class Vlan
-    def initialize(dev)
-      @dev = dev
+  def self.shellout(cmd)
+    run = Mixlib::ShellOut.new(cmd)
+    run.run_command
+    if run.error? || run.exitstatus != 0
+      raise "#{cmd} failed: \n ----- stderr ----- \n #{run.stderr} \n ------ stdout ----- \n #{run.stdout}"
+    end
+    run.stdout
+  end
+
+  class Netns
+    def initialize(name)
+      @name = name
+    end
+
+    def exist?
+      netnses = shellout('ip netns').lines.map(&:chomp!)
+      return true if netnses.include?(@name)
+      false
+    end
+
+    def add
+      shellout("ip netns add #{@name}")
+    end
+
+    def delete
+      shellout("ip netns delete #{@name}")
+    end
+
+    private
+
+    def shellout(cmd)
+      IPRoute.shellout(cmd)
     end
   end
 
   class Link
-    def initialize(dev)
+    def initialize(dev, netns = nil)
       @dev = dev
+      @netns = netns
     end
 
     def create(type)
       shellout("#{ip} link add dev #{@dev} type #{type}")
     end
 
+    def exist_in_netns?
+      links = shellout("#{netns_exec} #{ip} -o link")
+      links.each_line { |l| return true if l.split[1] == "#{@dev}:" }
+      false
+    end
+
     def exist?
-      File.read('/proc/net/dev').each_line { |l| return true if l.split[0] == "#{@dev}:" }
+      links = shellout("#{ip} -o link")
+      links.each_line { |l| return true if l.split[1] == "#{@dev}:" }
       false
     end
 
     def down
-      shellout("#{ip} link set dev #{@dev} down")
+      shellout("#{netns_exec} #{ip} link set dev #{@dev} down")
     end
 
     def up
-      shellout("#{ip} link set dev #{@dev} up")
+      shellout("#{netns_exec} #{ip} link set dev #{@dev} up")
     end
 
     def up?
@@ -42,21 +79,29 @@ module IPRoute
     end
 
     def state=(new_state)
-      shellout("#{ip} link set dev #{@dev} #{new_state}")
+      shellout("#{netns_exec} #{ip} link set dev #{@dev} #{new_state}")
     end
 
     def mtu=(new_mtu)
-      shellout("#{ip} link set dev #{@dev} mtu #{new_mtu}")
+      shellout("#{netns_exec} #{ip} link set dev #{@dev} mtu #{new_mtu}")
     end
 
     def mtu
       next_word(link.split, 'mtu').to_i
     end
 
+    def add_to_netns
+      shellout("ip link set dev #{@dev} netns #{@netns}")
+    end
+
     private
 
+    def netns_exec
+      @netns ? "ip netns exec #{@netns}" : ''
+    end
+
     def link
-      shellout("#{ip} -o link show #{@dev}")
+      shellout("#{netns_exec} #{ip} -o link show #{@dev}")
     end
 
     def ip
@@ -68,12 +113,7 @@ module IPRoute
     end
 
     def shellout(cmd)
-      run = Mixlib::ShellOut.new(cmd)
-      run.run_command
-      if run.error? || run.exitstatus != 0
-        raise "#{cmd} failed: \n ----- stderr ----- \n #{run.stderr} \n ------ stdout ----- \n #{run.stdout}"
-      end
-      run.stdout
+      IPRoute.shellout(cmd)
     end
   end
 end

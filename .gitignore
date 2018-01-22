@@ -50,3 +50,4 @@ Cheffile.lock
 .vagrant/
 .vagrant.d/
 .kitchen/
+tags
