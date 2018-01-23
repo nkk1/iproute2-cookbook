@@ -11,3 +11,7 @@
 ## 0.0.3
 * [**Karthik**](https://github.com/karthik-altiscale):
   network namespace capability
+
+## 0.1.0
+* [**Karthik**](https://github.com/karthik-altiscale):
+  Update readme for ip-link and ip-netns
