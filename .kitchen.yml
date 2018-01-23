@@ -8,6 +8,7 @@ provisioner:
 platforms:
   - name: centos-6
   - name: centos-7
+  - name: fedora-latest
 
 suites:
   - name: default
