@@ -4,7 +4,6 @@ property :device, String, name_property: true
 property :mtu, Integer
 property :type, String
 property :state, String
-property :lname, String
 property :adress, String
 property :netns, String
 property :alias, String
@@ -28,6 +27,7 @@ action :add do
   msg = "add link #{new_resource.device}"
   link = IPRoute::Link.new(new_resource.device, new_resource.netns)
   converge_by(msg) { link.create(new_resource.type) } unless link.exist_in_netns?
+  action_set
 end
 
 action :set do
