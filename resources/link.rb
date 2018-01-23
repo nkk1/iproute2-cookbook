@@ -4,7 +4,7 @@ property :device, String, name_property: true
 property :mtu, Integer
 property :type, String
 property :state, String
-property :adress, String
+property :mac, String
 property :netns, String
 property :alias, String
 property :txqueuelen, Integer
@@ -39,6 +39,7 @@ action :set do
       { link.add_to_netns } unless link.exist_in_netns?
   end
   converge_if_changed(:mtu) { link.mtu = new_resource.mtu } if property_is_set?(:mtu)
+  converge_if_changed(:mac) { link.mac = new_resource.mac } if property_is_set?(:mac)
   converge_if_changed(:state) { link.state = new_resource.state } if property_is_set?(:state)
 end
 

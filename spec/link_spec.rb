@@ -5,8 +5,11 @@ ip_link = {
   'eth' => '36: eth0@if37: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default \    link/ether 02:42:ac:11:00:02 brd ff:ff:ff:ff:ff:ff link-netnsid 0',
   'eth_old' => '4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9212 qdisc mq state UP qlen 1000\    link/ether 90:e2:ba:5d:a7:10 brd ff:ff:ff:ff:ff:ff',
   'eth_down' => '2: eth0: <BROADCAST,MULTICAST> mtu 9000 qdisc mq state DOWN qlen 1000\    link/ether 00:25:90:c0:b6:8a brd ff:ff:ff:ff:ff:ff',
-  'vlan' => '7: eth4.205@eth4: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP \    link/ether 90:e2:ba:5a:5c:f2 brd ff:ff:ff:ff:ff:ff',
-  'vlan_new' => '8: eth0.222@eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default qlen 1000\    link/ether 0c:c4:7a:bb:33:74 brd ff:ff:ff:ff:ff:ff',
+  'vlan' => '8: eth0.222@eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default qlen 1000\    link/ether 0c:c4:7a:bb:33:74 brd ff:ff:ff:ff:ff:ff',
+  'vlan_down' => '11: dumb0.8@dumb0: <BROADCAST,NOARP,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT qlen 1000\    link/ether 6e:d9:f0:b8:00:59 brd ff:ff:ff:ff:ff:ff',
+  'gre' => '12: tungre0@NONE: <POINTOPOINT,NOARP> mtu 1476 qdisc noop state DOWN mode DEFAULT qlen 1\    link/gre 10.1.1.2 peer 10.1.1.1',
+  'vti' => '13: vti0@NONE: <POINTOPOINT,NOARP,UP,LOWER_UP> mtu 1332 qdisc noqueue state UNKNOWN mode DEFAULT qlen 1\    link/ipip 10.1.1.2 peer 10.1.1.1',
+  'ipip' => '14: tunipip0@NONE: <POINTOPOINT,NOARP> mtu 1480 qdisc noop state DOWN mode DEFAULT qlen 1\    link/ipip 10.1.1.2 peer 10.1.1.1',
 }
 
 describe 'interface state' do

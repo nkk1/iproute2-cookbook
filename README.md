@@ -57,16 +57,28 @@ ip_netns 'vpn' do
 end
 ```
 
-
 ### ip-link
 
 #### Add a new link
 
 ```
 ip_link 'dumb0' do
-  action [:add, :set]
+  action :add
   type 'dummy'
   state 'down'
+end
+```
+
+#### update mac address
+
+:warning: Users should take care of taking effect like restart network etc :warning:
+
+```
+ip_link 'mac' do
+  action :add
+  type 'dummy'
+  state 'up'
+  mac '00:11:00:11:00:11'
 end
 ```
 
