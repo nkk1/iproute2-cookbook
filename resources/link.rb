@@ -21,6 +21,7 @@ load_current_value do |current|
   current_value_does_not_exist! unless link.exist_in_netns?
   mtu link.mtu
   state link.state
+  mac link.mac
 end
 
 action :add do
@@ -41,6 +42,7 @@ action :set do
   converge_if_changed(:mtu) { link.mtu = new_resource.mtu } if property_is_set?(:mtu)
   converge_if_changed(:mac) { link.mac = new_resource.mac } if property_is_set?(:mac)
   converge_if_changed(:state) { link.state = new_resource.state } if property_is_set?(:state)
+  # converge_if_changed(:alias) { link.alias = new_resource.alias } if property_is_set?(:alias)
 end
 
 action :down do

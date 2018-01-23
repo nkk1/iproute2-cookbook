@@ -58,7 +58,7 @@ module IPRoute
     end
 
     def mac=(new_mac)
-      shellout("ip link set dev #{@dev} address #{new_mac}")
+      shellout("#{netns_exec} ip link set dev #{@dev} address #{new_mac}")
     end
 
     def mac

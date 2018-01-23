@@ -19,3 +19,8 @@
 ## 0.1.1
 * [**Karthik**](https://github.com/karthik-altiscale):
   Action add to add and set [https://github.com/karthik-altiscale/iproute2-cookbook/issues/10](issue) 
+
+## 0.1.2
+* [**Karthik**](https://github.com/karthik-altiscale):
+  update mac address
+  test on all platforms 
