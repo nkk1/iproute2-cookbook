@@ -15,5 +15,5 @@ ip_link 'mac0' do
   action :add
   type 'dummy'
   mtu 9001
-  mac 'aa:bb:cc:00:11:22' 
+  mac 'aa:bb:cc:00:11:22'
 end
