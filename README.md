@@ -9,20 +9,7 @@ Provides custom resources for [iproute](http://manpages.ubuntu.com/manpages/trus
 * ip-link
 
 #### todo
-
-* ip-address
-* ip-route
-* ip-rule
-* ip-tunnel
-* ip-xfrm
-* ip-maddress
-* ip-addrlabel
-* ip-l2tp
-* ip-monitor
-* ip-mroute(8)
-* ip-neighbour
-* ip-ntable
-* ip-tcp_metrics
+* ip-address | ip-route | ip-rule | ip-tunnel | ip-xfrm | ip-maddress | ip-addrlabel | ip-l2tp | ip-monitor | ip-mroute(8) | ip-neighbour | ip-ntable | ip-tcp_metrics
 
 ### Platforms
 
@@ -40,11 +27,11 @@ Provides custom resources for [iproute](http://manpages.ubuntu.com/manpages/trus
 
 Installs iproute package
 
-## custom resources
+## Custom resources
 
 ### ip-netns
 
-#### Action :add (default)
+Action :add (default)
 
 ```
 ip_netns 'vpn' do
@@ -52,7 +39,7 @@ ip_netns 'vpn' do
 end
 ```
 
-#### Action :delete
+Action :delete
 
 ```
 ip_netns 'vpn' do
@@ -62,7 +49,7 @@ end
 
 ### ip-link
 
-#### Action :add (default)
+Action :add (default)
 ##### Does :add and then :set
 
 ```
@@ -86,7 +73,7 @@ end
 * alias_name: update alias name .. (`alias` is a reserved name so using `alias_name`)
 * qlen: update qlen
 
-#### Action :set
+Action :set
 
 ```
 ip_link 'dumb0' do
