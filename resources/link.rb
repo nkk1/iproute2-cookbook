@@ -3,18 +3,18 @@ provides :ip_link
 property :device, String, name_property: true
 property :mtu, Integer
 property :type, String
-property :state, String
+property :state, String, default: 'up'
 property :mac, String
 property :netns, String
-property :alias, String
-property :txqueuelen, Integer
+property :alias_name, String
+property :qlen, Integer
 
 property :promisc, [true, false]
 property :allmulticast, [true, false]
 property :dynamice, [true, false]
 property :multicast, [true, false]
 
-default_action :set
+default_action :add
 
 load_current_value do |current|
   link = IPRoute::Link.new(current.device, current.netns)
@@ -22,12 +22,14 @@ load_current_value do |current|
   mtu link.mtu
   state link.state
   mac link.mac
+  alias_name link.alias
+  qlen link.qlen
 end
 
 action :add do
   msg = "add link #{new_resource.device}"
   link = IPRoute::Link.new(new_resource.device, new_resource.netns)
-  converge_by(msg) { link.create(new_resource.type) } unless link.exist_in_netns?
+  converge_by(msg) { link.create(new_resource.type) } unless link.exist_in_netns? || link.exist?
   action_set
 end
 
@@ -42,7 +44,8 @@ action :set do
   converge_if_changed(:mtu) { link.mtu = new_resource.mtu } if property_is_set?(:mtu)
   converge_if_changed(:mac) { link.mac = new_resource.mac } if property_is_set?(:mac)
   converge_if_changed(:state) { link.state = new_resource.state } if property_is_set?(:state)
-  # converge_if_changed(:alias) { link.alias = new_resource.alias } if property_is_set?(:alias)
+  converge_if_changed(:alias_name) { link.alias = new_resource.alias_name } if property_is_set?(:alias_name)
+  converge_if_changed(:qlen) { link.qlen = new_resource.qlen } if property_is_set?(:qlen)
 end
 
 action :down do

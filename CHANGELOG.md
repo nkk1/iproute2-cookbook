@@ -24,3 +24,7 @@
 * [**Karthik**](https://github.com/karthik-altiscale):
   update mac address
   test on all platforms 
+
+## 0.2.0
+* [**Karthik**](https://github.com/karthik-altiscale):
+  all targetted `ip link` features
