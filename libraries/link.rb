@@ -38,7 +38,7 @@ module IPRoute
     end
 
     def state
-      next_word(link.split, 'state').downcase
+      next_word('state').downcase
     end
 
     def state=(new_state)
@@ -50,7 +50,7 @@ module IPRoute
     end
 
     def mtu
-      next_word(link.split, 'mtu').to_i
+      next_word('mtu').to_i
     end
 
     def add_to_netns
@@ -62,7 +62,26 @@ module IPRoute
     end
 
     def mac
-      next_word(link.split, 'link/ether')
+      next_word('link/ether')
+    end
+
+    def alias=(new_alias)
+      shellout("#{netns_exec} ip link set dev #{@dev} alias \"#{new_alias}\"")
+    end
+
+    def alias
+      alias_link = link(false)
+      last_line = alias_link.split("\n")[-1]
+      return nil unless last_line.start_with?('alias')
+      last_line.split(' ', 2)[1]
+    end
+
+    def qlen
+      next_word('qlen').to_i if link.include?('qlen')
+    end
+
+    def qlen=(new_txqueuelen)
+      shellout("#{netns_exec} ip link set dev #{@dev} txqueuelen #{new_txqueuelen}")
     end
 
     private
@@ -71,15 +90,17 @@ module IPRoute
       @netns ? "ip netns exec #{@netns}" : ''
     end
 
-    def link
-      shellout("#{netns_exec} #{ip} -o link show #{@dev}")
+    def link(line = true)
+      l = line ? '-o' : ''
+      shellout("#{netns_exec} #{ip} #{l} link show #{@dev}")
     end
 
     def ip
       '/sbin/ip'
     end
 
-    def next_word(words, word)
+    def next_word(word)
+      words = link.split
       words[words.index(word) + 1]
     end
 

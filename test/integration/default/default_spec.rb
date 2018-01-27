@@ -13,7 +13,7 @@ if command('/sbin/ip netns').exit_status == 0
     its('stdout') { should match /space/ }
   end
 
-  describe command('/sbin/ip netns exec vpn ip link show vpn0') do
+  describe command('/sbin/ip netns exec vpn ip link show nsvpn0') do
     its('stdout') { should match /state DOWN/ }
   end
 
@@ -21,8 +21,28 @@ if command('/sbin/ip netns').exit_status == 0
     its('stdout') { should match /mtu 1400/ }
   end
 
-  describe command('/sbin/ip -o netns exec space ip link show nsmac0') do
+  describe command('/sbin/ip netns exec space ip link show nsmac0') do
     its('stdout') { should match /aa:bb:cc:00:11:22/ }
+  end
+
+  describe command('/sbin/ip netns exec vpn ip link show nsalias0') do
+    its('stdout') { should match /alias i am alias of nsalias0/ }
+  end
+
+  describe command('/sbin/ip netns exec vpn ip link show nsalias0') do
+    its('stdout') { should match /qlen 12345/ }
+  end
+
+  describe interface('nsvpn0') do
+    it { should_not exist }
+  end
+
+  describe interface('nsmac0') do
+    it { should_not exist }
+  end
+
+  describe interface('nsalias0') do
+    it { should_not exist }
   end
 
 else
@@ -36,5 +56,13 @@ else
 
   describe file('/sys/class/net/mac0/address') do
     its('content') { should eq "aa:bb:cc:00:11:22\n" }
+  end
+
+  describe command('/sbin/ip link show alias0') do
+    its('stdout') { should match /alias i am alias of alias0/ }
+  end
+
+  describe command('/sbin/ip link show alias0') do
+    its('stdout') { should match /qlen 12345/ }
   end
 end

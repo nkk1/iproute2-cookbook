@@ -9,12 +9,12 @@ Provides custom resources for [iproute](http://manpages.ubuntu.com/manpages/trus
 * ip-link
 
 #### todo
+
 * ip-address
 * ip-route
 * ip-rule
 * ip-tunnel
 * ip-xfrm
-
 * ip-maddress
 * ip-addrlabel
 * ip-l2tp
@@ -44,70 +44,58 @@ Installs iproute package
 
 ### ip-netns
 
-#### Add netns 
+#### Action :add (default)
 
-```
-ip_netns 'vpn'
-```
-
-or
 ```
 ip_netns 'vpn' do
   action :add
 end
 ```
 
+#### Action :delete
+
+```
+ip_netns 'vpn' do
+  action :delete
+end
+```
+
 ### ip-link
 
-#### Add a new link
+#### Action :add (default)
+##### Does :add and then :set
 
 ```
 ip_link 'dumb0' do
   action :add
   type 'dummy'
   state 'down'
+  netns 'vpn'
+  mtu 900
+  mac 'aa:bb:cc:00:11:22'
+  alias_name 'i am alias of nsalias0'
+  qlen 12345
 end
 ```
 
-#### update mac address
+* type: can be ..... <#todo>
+* state: can be up or down, default is *up*
+* netns: netns is created if does not exist already. make sure netns support is there. 
+* mtu: mtu
+* mac: update mac. :warning: cookbook does not take care of restarting network or link :warning:
+* alias_name: update alias name .. (`alias` is a reserved name so using `alias_name`)
+* qlen: update qlen
 
-:warning: Users should take care of taking effect like restart network etc :warning:
-
-```
-ip_link 'mac' do
-  action :add
-  type 'dummy'
-  state 'up'
-  mac '00:11:00:11:00:11'
-end
-```
-
-#TODO: Add the allowed types
-
-#### turn up the link and set MTU to say 1400
+#### Action :set
 
 ```
-ip_link 'dumb1' do
+ip_link 'dumb0' do
   action :set
-  mtu 1400
-  state 'up'
-end
-```
-
-#### Associate the link to netns say vpn and turn up and set MTU to 1400
-
-create vpn netns
-
-```
-ip_netns 'vpn'
-```
-
-add link to the netns
-```
-ip_link 'dumb2' do
-  action :set
-  mtu 1400
-  state 'up'
-  netns 'vpn
+  state 'down'
+  netns 'vpn'
+  mtu 900
+  mac 'aa:bb:cc:00:11:22'
+  alias_name 'i am alias of nsalias0'
+  qlen 12345
 end
 ```

@@ -10,6 +10,7 @@ ip_link = {
   'gre' => '12: tungre0@NONE: <POINTOPOINT,NOARP> mtu 1476 qdisc noop state DOWN mode DEFAULT qlen 1\    link/gre 10.1.1.2 peer 10.1.1.1',
   'vti' => '13: vti0@NONE: <POINTOPOINT,NOARP,UP,LOWER_UP> mtu 1332 qdisc noqueue state UNKNOWN mode DEFAULT qlen 1\    link/ipip 10.1.1.2 peer 10.1.1.1',
   'ipip' => '14: tunipip0@NONE: <POINTOPOINT,NOARP> mtu 1480 qdisc noop state DOWN mode DEFAULT qlen 1\    link/ipip 10.1.1.2 peer 10.1.1.1',
+  'alias' => "5: alias0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT qlen 12345\nlink/ether ee:18:1f:52:9a:94 brd ff:ff:ff:ff:ff:ff\nalias i am alias of alias0",
 }
 
 describe 'interface state' do
@@ -43,6 +44,20 @@ describe 'interface state' do
 
     it 'returns interface mtu' do
       expect(link.mtu).to eq(1500)
+    end
+
+    it 'returns qlen' do
+      cmd = ' /sbin/ip -o link show eth0'
+      allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
+      allow(shellout).to receive(:stdout).and_return(ip_link['eth_down'])
+      expect(link.qlen).to eq(1000)
+    end
+
+    it 'returns alias' do
+      cmd = ' /sbin/ip  link show eth0'
+      allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
+      allow(shellout).to receive(:stdout).and_return(ip_link['alias'])
+      expect(link.alias).to eq('i am alias of alias0')
     end
 
     it 'returns down interface' do
@@ -91,6 +106,13 @@ describe 'interface state' do
 
     it 'returns interface mtu' do
       expect(link.mtu).to eq(1500)
+    end
+
+    it 'returns qlen' do
+      cmd = 'ip netns exec vpn /sbin/ip -o link show eth0'
+      allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
+      allow(shellout).to receive(:stdout).and_return(ip_link['eth_down'])
+      expect(link.qlen).to eq(1000)
     end
 
     it 'returns down interface' do
