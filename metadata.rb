@@ -8,7 +8,7 @@ license 'All rights reserved'
 
 chef_version '>= 12.5'
 
-source_url "https://github.com/VertiCloud/#{name}-cookbook"
+source_url "https://github.com/karthik-altiscale/#{name}-cookbook"
 issues_url "#{source_url}/issues"
 
 supports          'ubuntu', '>= 12.04'
