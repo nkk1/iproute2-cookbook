@@ -9,11 +9,11 @@ describe 'interface state' do
     allow(shellout).to receive(:exitstatus).and_return(0)
   end
 
-  context 'when no network namespace' do
+  context 'when in network namespace' do
     describe 'when normal interface' do
-      let(:link) { IPRoute::Link.new('eth0') }
+      let(:link) { IPRoute::Link.new('eth0', 'netns') }
       before do
-        cmd = ' /sbin/ip -o -d link show eth0'
+        cmd = '/sbin/ip netns exec netns /sbin/ip -o -d link show eth0'
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
         allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['eth'])
       end
@@ -23,7 +23,7 @@ describe 'interface state' do
       end
 
       it 'sets interface state' do
-        expect(Mixlib::ShellOut).to receive(:new).with(' /sbin/ip link set dev eth0 up')
+        expect(Mixlib::ShellOut).to receive(:new).with('/sbin/ip netns exec netns /sbin/ip link set dev eth0 up')
                                                  .and_return(shellout)
         link.state = 'up'
       end
@@ -46,7 +46,7 @@ describe 'interface state' do
 
       it 'sets interface mtu' do
         expect(Mixlib::ShellOut).to receive(:new)
-          .with(' /sbin/ip link set dev eth0 mtu 987654321').and_return(shellout)
+          .with('/sbin/ip netns exec netns /sbin/ip link set dev eth0 mtu 987654321').and_return(shellout)
         link.mtu = 987654321
       end
 
@@ -56,7 +56,7 @@ describe 'interface state' do
 
       it 'sets qlen' do
         expect(Mixlib::ShellOut).to receive(:new)
-          .with(' /sbin/ip link set dev eth0 txqueuelen 123456789').and_return(shellout)
+          .with('/sbin/ip netns exec netns /sbin/ip link set dev eth0 txqueuelen 123456789').and_return(shellout)
         link.qlen = 123456789
       end
 
@@ -66,7 +66,7 @@ describe 'interface state' do
 
       it 'sets mac' do
         expect(Mixlib::ShellOut).to receive(:new)
-          .with(' /sbin/ip link set dev eth0 address a:b:c:d:e:f').and_return(shellout)
+          .with('/sbin/ip netns exec netns /sbin/ip link set dev eth0 address a:b:c:d:e:f').and_return(shellout)
         link.mac = 'a:b:c:d:e:f'
       end
     end
@@ -90,9 +90,9 @@ describe 'interface state' do
     end
 
     describe 'link down' do
-      let(:link) { IPRoute::Link.new('eth4') }
+      let(:link) { IPRoute::Link.new('eth4', 'netns') }
       before(:each) do
-        cmd = ' /sbin/ip -o -d link show eth4'
+        cmd = '/sbin/ip netns exec netns /sbin/ip -o -d link show eth4'
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
         allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['eth_down'])
       end
@@ -107,9 +107,9 @@ describe 'interface state' do
     end
 
     describe 'link alias' do
-      let(:link) { IPRoute::Link.new('eth0') }
+      let(:link) { IPRoute::Link.new('eth0', 'netns') }
       before(:each) do
-        cmd = ' /sbin/ip  -d link show eth0'
+        cmd = '/sbin/ip netns exec netns /sbin/ip  -d link show eth0'
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
         allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['alias'])
       end
@@ -120,7 +120,7 @@ describe 'interface state' do
 
       it 'sets alias' do
         expect(Mixlib::ShellOut).to receive(:new)
-          .with(' /sbin/ip link set dev eth0 alias "summa"').and_return(shellout)
+          .with('/sbin/ip netns exec netns /sbin/ip link set dev eth0 alias "summa"').and_return(shellout)
         link.alias = 'summa'
       end
     end
