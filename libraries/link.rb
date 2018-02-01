@@ -22,11 +22,11 @@ module IPRoute
     end
 
     def down
-      shellout("#{netns_exec} #{ip} link set dev #{@dev} down")
+      shellout("#{netns_exec}#{ip} link set dev #{@dev} down")
     end
 
     def up
-      shellout("#{netns_exec} #{ip} link set dev #{@dev} up")
+      shellout("#{netns_exec}#{ip} link set dev #{@dev} up")
     end
 
     def up?
@@ -42,11 +42,11 @@ module IPRoute
     end
 
     def state=(new_state)
-      shellout("#{netns_exec} #{ip} link set dev #{@dev} #{new_state}")
+      shellout("#{netns_exec}#{ip} link set dev #{@dev} #{new_state}")
     end
 
     def mtu=(new_mtu)
-      shellout("#{netns_exec} #{ip} link set dev #{@dev} mtu #{new_mtu}")
+      shellout("#{netns_exec}#{ip} link set dev #{@dev} mtu #{new_mtu}")
     end
 
     def mtu
@@ -58,7 +58,7 @@ module IPRoute
     end
 
     def mac=(new_mac)
-      shellout("#{netns_exec} #{ip} link set dev #{@dev} address #{new_mac}")
+      shellout("#{netns_exec}#{ip} link set dev #{@dev} address #{new_mac}")
     end
 
     def mac
@@ -66,7 +66,7 @@ module IPRoute
     end
 
     def alias=(new_alias)
-      shellout("#{netns_exec} #{ip} link set dev #{@dev} alias \"#{new_alias}\"")
+      shellout("#{netns_exec}#{ip} link set dev #{@dev} alias \"#{new_alias}\"")
     end
 
     def alias
@@ -81,10 +81,10 @@ module IPRoute
     end
 
     def qlen=(new_txqueuelen)
-      shellout("#{netns_exec} #{ip} link set dev #{@dev} txqueuelen #{new_txqueuelen}")
+      shellout("#{netns_exec}#{ip} link set dev #{@dev} txqueuelen #{new_txqueuelen}")
     end
 
-    private
+    protected
 
     def netns_exec
       @netns ? "#{ip} netns exec #{@netns} " : ''
@@ -92,7 +92,7 @@ module IPRoute
 
     def link(line = true)
       l = line ? '-o' : ''
-      shellout("#{netns_exec} #{ip} #{l} -d link show #{@dev}")
+      shellout("#{netns_exec}#{ip} #{l} -d link show #{@dev}")
     end
 
     def ip
