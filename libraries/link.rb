@@ -10,7 +10,7 @@ module IPRoute
     end
 
     def exist_in_netns?
-      links = shellout("#{netns_exec} #{ip} -o link")
+      links = shellout("#{netns_exec}#{ip} -o link")
       links.each_line { |l| return true if l.split[1] == "#{@dev}:" }
       false
     end
@@ -22,11 +22,11 @@ module IPRoute
     end
 
     def down
-      shellout("#{netns_exec} #{ip} link set dev #{@dev} down")
+      shellout("#{netns_exec}#{ip} link set dev #{@dev} down")
     end
 
     def up
-      shellout("#{netns_exec} #{ip} link set dev #{@dev} up")
+      shellout("#{netns_exec}#{ip} link set dev #{@dev} up")
     end
 
     def up?
@@ -42,11 +42,11 @@ module IPRoute
     end
 
     def state=(new_state)
-      shellout("#{netns_exec} #{ip} link set dev #{@dev} #{new_state}")
+      shellout("#{netns_exec}#{ip} link set dev #{@dev} #{new_state}")
     end
 
     def mtu=(new_mtu)
-      shellout("#{netns_exec} #{ip} link set dev #{@dev} mtu #{new_mtu}")
+      shellout("#{netns_exec}#{ip} link set dev #{@dev} mtu #{new_mtu}")
     end
 
     def mtu
@@ -54,11 +54,11 @@ module IPRoute
     end
 
     def add_to_netns
-      shellout("ip link set dev #{@dev} netns #{@netns}")
+      shellout("#{ip} link set dev #{@dev} netns #{@netns}")
     end
 
     def mac=(new_mac)
-      shellout("#{netns_exec} ip link set dev #{@dev} address #{new_mac}")
+      shellout("#{netns_exec}#{ip} link set dev #{@dev} address #{new_mac}")
     end
 
     def mac
@@ -66,12 +66,12 @@ module IPRoute
     end
 
     def alias=(new_alias)
-      shellout("#{netns_exec} ip link set dev #{@dev} alias \"#{new_alias}\"")
+      shellout("#{netns_exec}#{ip} link set dev #{@dev} alias \"#{new_alias}\"")
     end
 
     def alias
       alias_link = link(false)
-      last_line = alias_link.split("\n")[-1]
+      last_line = alias_link.split("\n")[-1].lstrip
       return nil unless last_line.start_with?('alias')
       last_line.split(' ', 2)[1]
     end
@@ -81,18 +81,18 @@ module IPRoute
     end
 
     def qlen=(new_txqueuelen)
-      shellout("#{netns_exec} ip link set dev #{@dev} txqueuelen #{new_txqueuelen}")
+      shellout("#{netns_exec}#{ip} link set dev #{@dev} txqueuelen #{new_txqueuelen}")
     end
 
-    private
+    protected
 
     def netns_exec
-      @netns ? "ip netns exec #{@netns}" : ''
+      @netns ? "#{ip} netns exec #{@netns} " : ''
     end
 
     def link(line = true)
       l = line ? '-o' : ''
-      shellout("#{netns_exec} #{ip} #{l} link show #{@dev}")
+      shellout("#{netns_exec}#{ip} #{l} -d link show #{@dev}")
     end
 
     def ip
