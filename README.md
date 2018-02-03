@@ -29,7 +29,8 @@ Installs iproute package
 
 ## Custom resources
 
-### ip-netns
+## ip-netns
+---
 
 Action :add (default)
 
@@ -47,10 +48,13 @@ ip_netns 'vpn' do
 end
 ```
 
-### ip-link
+## ip-link
+---
+
+#### Ethernet interface
 
 Action :add (default)
-##### Does :add and then :set
+**Note* Does :add and then :set
 
 ```
 ip_link 'dumb0' do
@@ -80,7 +84,7 @@ end
 ```
 
 #### VLAN
-
+---
 Action :add (default)
 ```
 ip_link 'vlan.200' do
@@ -95,6 +99,32 @@ ip_link 'vlan.200' do
 end
 ```
 
+#### VETH PAIR
+---
+
+Action :add
+
+Creates a pair of veth interfaces nsveth1 and nsveth2 and assigns them to appropriate netns
+
+```
+ip_link 'nsveth1' do
+  type 'veth'
+  peer 'nsveth2'
+  netns 'aside'
+  alias_name 'i am one end'
+end
+```
+
+```
+ip_link 'nsveth2' do
+  action :set
+  type 'veth'
+  netns 'zside'
+  alias_name 'i am the other end'
+end
+```
+
+
 
 Properties
 * type: can be ..... <#todo>
@@ -104,3 +134,6 @@ Properties
 * mac: update mac. :warning: cookbook does not take care of restarting network or link :warning:
 * alias_name: update alias name .. (`alias` is a reserved name so using `alias_name`)
 * qlen: update qlen
+* link: link on which vlan to be created. used with *vlan* type
+* id: vlan id. used with *vlan* type
+* peer: used with *veth* type 
