@@ -1,5 +1,3 @@
-require 'serverspec'
-
 name = os[:family] == 'suse' ? 'iproute2' : 'iproute'
 
 describe package(name) do
@@ -27,42 +25,60 @@ if command('/sbin/ip netns').exit_status == 0
 
   describe command('/sbin/ip netns exec vpn ip link show nsalias0') do
     its('stdout') { should match /alias i am alias of nsalias0/ }
-  end
-
-  describe command('/sbin/ip netns exec vpn ip link show nsalias0') do
     its('stdout') { should match /qlen 12345/ }
   end
 
-  describe interface('nsvpn0') do
-    it { should_not exist }
+  describe command('/sbin/ip netns exec vlanns ip link show nsvlantest') do
+    its('stdout') { should match /mtu 1400/ }
+    its('stdout') { should match /ether aa:00:aa:00:aa:00/ }
+    its('stdout') { should match /qlen 300/ }
+    its('stdout') { should match /alias i am vlan in netns/ }
   end
+end
 
-  describe interface('nsmac0') do
-    it { should_not exist }
-  end
+describe interface('nsvpn0') do
+  it { should_not exist }
+end
 
-  describe interface('nsalias0') do
-    it { should_not exist }
-  end
+describe interface('nsmac0') do
+  it { should_not exist }
+end
 
-else
-  describe interface('dumb0') do
-    it { should_not be_up }
-  end
+describe interface('nsalias0') do
+  it { should_not exist }
+end
 
-  describe file('/sys/class/net/dumb1/mtu') do
-    its('content') { should eq "1400\n" }
-  end
+describe interface('dumb0') do
+  it { should_not be_up }
+end
 
-  describe file('/sys/class/net/mac0/address') do
-    its('content') { should eq "aa:bb:cc:00:11:22\n" }
-  end
+describe interface('nsvlantest') do
+  it { should_not be_up }
+end
 
-  describe command('/sbin/ip link show alias0') do
-    its('stdout') { should match /alias i am alias of alias0/ }
-  end
+describe interface('nsvlan0') do
+  it { should_not be_up }
+end
 
-  describe command('/sbin/ip link show alias0') do
-    its('stdout') { should match /qlen 12345/ }
-  end
+describe file('/sys/class/net/dumb1/mtu') do
+  its('content') { should eq "1400\n" }
+end
+
+describe file('/sys/class/net/mac0/address') do
+  its('content') { should eq "aa:bb:cc:00:11:22\n" }
+end
+
+describe command('/sbin/ip link show alias0') do
+  its('stdout') { should match /alias i am alias of alias0/ }
+end
+
+describe command('/sbin/ip link show alias0') do
+  its('stdout') { should match /qlen 12345/ }
+end
+
+describe command('/sbin/ip link show vlan0.100') do
+  its('stdout') { should match /ether 00:aa:00:aa:00:aa/ }
+  its('stdout') { should match /mtu 1200/ }
+  its('stdout') { should match /qlen 200/ }
+  its('stdout') { should match /alias i am a test vlan/ }
 end

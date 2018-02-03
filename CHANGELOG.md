@@ -28,3 +28,7 @@
 ## 0.2.0
 * [**Karthik**](https://github.com/karthik-altiscale):
   all targetted `ip link` features
+
+## 0.3.0
+* [**Karthik**](https://github.com/karthik-altiscale):
+  ip link can create VLANs
