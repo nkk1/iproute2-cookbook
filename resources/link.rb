@@ -10,6 +10,7 @@ property :alias_name, String
 property :qlen, Integer
 property :link, String
 property :id, Integer
+property :peer, String
 
 # property :promisc, [true, false]
 # property :allmulticast, [true, false]

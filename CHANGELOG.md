@@ -32,3 +32,7 @@
 ## 0.3.0
 * [**Karthik**](https://github.com/karthik-altiscale):
   ip link can create VLANs
+
+## 0.4.0
+* [**Karthik**](https://github.com/karthik-altiscale):
+  ip link can create veth pairs and associate to netns

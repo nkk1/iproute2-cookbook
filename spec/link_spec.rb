@@ -152,7 +152,7 @@ describe 'interface state' do
         link.create
       end
 
-      it 'checks existence of vlan in vlan' do
+      it 'checks existence of vlan in netns' do
         cmd = '/sbin/ip -o link'
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
         allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['vlan'])
@@ -164,6 +164,26 @@ describe 'interface state' do
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
         allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['vlan'])
         expect(link.exist?).to be_truthy
+      end
+    end
+
+    describe 'veth' do
+      let(:link) { IPRoute::VEth.new('veth1', 'veth2', 'aside') }
+
+      it 'creates veth pair' do
+        cmd = '/sbin/ip  -d link show veth1'
+        allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
+        allow(shellout).to receive(:stdout)
+        expect(Mixlib::ShellOut).to receive(:new)
+          .with('/sbin/ip link add dev veth1 type veth peer name veth2').and_return(shellout)
+        link.create
+      end
+
+      it 'checks existence of veth in netns' do
+        cmd = '/sbin/ip netns exec aside /sbin/ip -o link'
+        allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
+        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['veth'])
+        expect(link.exist_in_netns?).to be_truthy
       end
     end
   end
