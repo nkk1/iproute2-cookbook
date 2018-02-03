@@ -34,6 +34,16 @@ if command('/sbin/ip netns').exit_status == 0
     its('stdout') { should match /qlen 300/ }
     its('stdout') { should match /alias i am vlan in netns/ }
   end
+
+  describe command('/sbin/ip netns exec aside ip link show') do
+    its('stdout') { should match /nsveth1@/ }
+    its('stdout') { should match /alias i am one end/ }
+  end
+
+  describe command('/sbin/ip netns exec zside ip link show') do
+    its('stdout') { should match /nsveth2@/ }
+    its('stdout') { should match /alias i am the other end/ }
+  end
 end
 
 describe interface('nsvpn0') do
@@ -81,4 +91,20 @@ describe command('/sbin/ip link show vlan0.100') do
   its('stdout') { should match /mtu 1200/ }
   its('stdout') { should match /qlen 200/ }
   its('stdout') { should match /alias i am a test vlan/ }
+end
+
+describe interface('nsveth1') do
+  it { should_not exist }
+end
+
+describe interface('nsveth2') do
+  it { should_not exist }
+end
+
+describe interface('veth1') do
+  it { should exist }
+end
+
+describe interface('veth2') do
+  it { should exist }
 end
