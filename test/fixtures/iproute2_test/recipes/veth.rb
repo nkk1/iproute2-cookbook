@@ -10,4 +10,4 @@ ip_link 'veth2' do
   alias_name 'i am the other end'
 end
 
-#TODO: Attach veths to linux bridge
+# TODO: Attach veths to linux bridge
