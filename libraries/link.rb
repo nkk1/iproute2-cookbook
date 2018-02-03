@@ -5,8 +5,8 @@ module IPRoute
       @netns = netns
     end
 
-    def create(type)
-      shellout("#{ip} link add dev #{@dev} type #{type}")
+    def create
+      raise 'IPRoute::Link.create says: Not implemented'
     end
 
     def exist_in_netns?

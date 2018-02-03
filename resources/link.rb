@@ -8,16 +8,18 @@ property :mac, String
 property :netns, String
 property :alias_name, String
 property :qlen, Integer
+property :link, String
+property :id, Integer
 
-property :promisc, [true, false]
-property :allmulticast, [true, false]
-property :dynamice, [true, false]
-property :multicast, [true, false]
+# property :promisc, [true, false]
+# property :allmulticast, [true, false]
+# property :dynamice, [true, false]
+# property :multicast, [true, false]
 
 default_action :add
 
 load_current_value do |current|
-  link = IPRoute::Link.new(current.device, current.netns)
+  link = IPRoute.get_link_object(current)
   current_value_does_not_exist! unless link.exist_in_netns?
   mtu link.mtu
   state link.state
@@ -28,16 +30,15 @@ end
 
 action :add do
   msg = "add link #{new_resource.device}"
-  link = IPRoute::Link.new(new_resource.device, new_resource.netns)
-  converge_by(msg) { link.create(new_resource.type) } unless link.exist_in_netns? || link.exist?
+  link = nil
+  link = IPRoute.get_link_object(new_resource)
+  converge_by(msg) { link.create } unless link.exist_in_netns? || link.exist?
   action_set
 end
 
 action :set do
-  link = IPRoute::Link.new(new_resource.device, new_resource.netns)
-  netns = IPRoute::Netns.new(new_resource.netns)
+  link = IPRoute.get_link_object(new_resource)
   if property_is_set?(:netns)
-    converge_by("create netns #{new_resource.netns}") { netns.add } unless netns.exist?
     converge_by("add link #{new_resource.device} to netns #{new_resource.netns}") \
       { link.add_to_netns } unless link.exist_in_netns?
   end
@@ -49,7 +50,7 @@ action :set do
 end
 
 action :down do
-  link = IPRoute::Link.new(new_resource.device, new_resource.netns)
+  link = IPRoute.get_link_object(new_resource)
   if link.exist_in_netns?
     link = IPRoute::Link.new(new_resource.device, new_resource.netns)
     converge_by("ip link set dev #{new_resource.device} down") { link.down } unless link.down?

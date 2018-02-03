@@ -7,6 +7,7 @@ describe 'interface state' do
     allow(shellout).to receive(:run_command)
     allow(shellout).to receive(:error?)
     allow(shellout).to receive(:exitstatus).and_return(0)
+    allow(shellout).to receive(:stdout)
   end
 
   context 'when no network namespace' do
@@ -69,9 +70,13 @@ describe 'interface state' do
           .with('/sbin/ip link set dev eth0 address a:b:c:d:e:f').and_return(shellout)
         link.mac = 'a:b:c:d:e:f'
       end
+
+      it 'raises when creating interface' do
+        expect { link.create }.to raise_error(RuntimeError, /Not implemented/)
+      end
     end
 
-    describe 'link existance' do
+    describe 'link existence' do
       let(:link) { IPRoute::Link.new('eth4') }
       before(:each) do
         cmd = '/sbin/ip -o link'
@@ -122,6 +127,43 @@ describe 'interface state' do
         expect(Mixlib::ShellOut).to receive(:new)
           .with('/sbin/ip link set dev eth0 alias "summa"').and_return(shellout)
         link.alias = 'summa'
+      end
+    end
+
+    describe 'dummy' do
+      let(:link) { IPRoute::Dummy.new('eth0') }
+
+      it 'creates dummy interface' do
+        expect(Mixlib::ShellOut).to receive(:new)
+          .with('/sbin/ip link add dev eth0 type dummy').and_return(shellout)
+        link.create
+      end
+    end
+
+    describe 'vlan' do
+      let(:link) { IPRoute::VLAN.new('eth0.393', 'eth0', 393) }
+
+      it 'creates vlan' do
+        cmd = '/sbin/ip  -d link show eth0.393'
+        allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
+        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['alias'])
+        expect(Mixlib::ShellOut).to receive(:new)
+          .with('/sbin/ip link add dev eth0.393 link eth0 type vlan id 393').and_return(shellout)
+        link.create
+      end
+
+      it 'checks existence of vlan in vlan' do
+        cmd = '/sbin/ip -o link'
+        allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
+        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['vlan'])
+        expect(link.exist_in_netns?).to be_truthy
+      end
+
+      it 'checks existence of vlan' do
+        cmd = '/sbin/ip -o link'
+        allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
+        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['vlan'])
+        expect(link.exist?).to be_truthy
       end
     end
   end

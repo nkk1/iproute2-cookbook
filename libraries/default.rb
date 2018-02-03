@@ -9,4 +9,15 @@ module IPRoute
     end
     run.stdout
   end
+
+  def self.get_link_object(new_resource)
+    case new_resource.type
+    when 'vlan'
+      IPRoute::VLAN.new(new_resource.device, new_resource.link, new_resource.id, new_resource.netns)
+    when 'dummy'
+      IPRoute::Dummy.new(new_resource.device, new_resource.netns)
+    else
+      IPRoute::Link.new(new_resource.device, new_resource.netns)
+    end
+  end
 end

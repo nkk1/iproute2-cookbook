@@ -79,10 +79,27 @@ ip_link 'dumb0' do
 end
 ```
 
+#### VLAN
+
+Action :add (default)
+```
+ip_link 'vlan.200' do
+  link 'nsvlan0'
+  id 200
+  type 'vlan'
+  netns 'vlanns'
+  mtu 1400
+  mac 'aa:00:aa:00:aa:00'
+  qlen 300
+  alias_name 'i am vlan in netns'
+end
+```
+
+
 Properties
 * type: can be ..... <#todo>
 * state: can be up or down, default is *up*
-* netns: netns is created if does not exist already. make sure netns support is there. 
+* netns: netns to which link should be in. make sure netns support is there. 
 * mtu: mtu
 * mac: update mac. :warning: cookbook does not take care of restarting network or link :warning:
 * alias_name: update alias name .. (`alias` is a reserved name so using `alias_name`)
