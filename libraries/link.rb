@@ -6,7 +6,7 @@ module IPRoute
     end
 
     def create
-      raise 'IPRoute::Link.create says: Not implemented'
+      raise 'IPRoute::Link.create says: Not implemented. Please mention the *type* property'
     end
 
     def exist_in_netns?
@@ -82,6 +82,10 @@ module IPRoute
 
     def qlen=(new_txqueuelen)
       shellout("#{netns_exec}#{ip} link set dev #{@dev} txqueuelen #{new_txqueuelen}")
+    end
+
+    def delete
+      shellout("#{netns_exec}#{ip} link delete dev #{@dev}#{@type ? ' type ' + @type : ''}")
     end
 
     protected

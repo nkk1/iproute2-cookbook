@@ -41,3 +41,7 @@
 * [**Karthik**](https://github.com/karthik-altiscale):
   apache-2 license
 
+## 0.4.2
+* [**Karthik**](https://github.com/karthik-altiscale):
+  Delete action for links
+

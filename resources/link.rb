@@ -57,3 +57,9 @@ action :down do
     converge_by("ip link set dev #{new_resource.device} down") { link.down } unless link.down?
   end
 end
+
+action :delete do
+  link = IPRoute.get_link_object(new_resource)
+  converge_if_changed(:state) { link.state = new_resource.state } if property_is_set?(:state)
+  link.delete
+end

@@ -33,3 +33,14 @@ end
 ip_link 'alias0' do
   qlen 12345
 end
+
+ip_link 'deltest' do
+  type 'dummy'
+  state 'up'
+end
+
+ip_link 'deltest' do
+  action :delete
+  type 'dummy'
+  state 'down'
+end

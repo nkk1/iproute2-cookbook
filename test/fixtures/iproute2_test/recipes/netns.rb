@@ -45,3 +45,16 @@ ip_link 'nsalias0' do
   alias_name 'i am alias of nsalias0'
   qlen 12345
 end
+
+ip_link 'nsdeltest0' do
+  type 'dummy'
+  state 'up'
+  netns 'vpn'
+end
+
+ip_link 'nsdeltest0' do
+  type 'dummy'
+  netns 'vpn'
+  state 'down'
+  action :delete
+end

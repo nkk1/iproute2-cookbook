@@ -15,3 +15,20 @@ ip_link 'nsveth2' do
   netns 'zside'
   alias_name 'i am the other end'
 end
+
+ip_link 'nsvethdel1' do
+  type 'veth'
+  peer 'nsvethdel2'
+  netns 'aside'
+end
+
+ip_link 'nsvethdel2' do
+  action :set
+  type 'veth'
+  netns 'zside'
+end
+
+ip_link 'nsvethdel1' do
+  netns 'aside'
+  action :delete
+end
