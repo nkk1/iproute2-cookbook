@@ -3,8 +3,8 @@ maintainer        'karthik'
 maintainer_email  'kumarkarthikn@gmail.com'
 description       'Provides custom resources for iproute2 commands'
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version           '0.4.0'
-license 'All rights reserved'
+version           '0.4.1'
+license           'Apache-2.0'
 
 chef_version '>= 12.5'
 
