@@ -36,3 +36,8 @@
 ## 0.4.0
 * [**Karthik**](https://github.com/karthik-altiscale):
   ip link can create veth pairs and associate to netns
+
+## 0.4.1
+* [**Karthik**](https://github.com/karthik-altiscale):
+  apache-2 license
+
