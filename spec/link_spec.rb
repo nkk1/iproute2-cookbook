@@ -16,7 +16,7 @@ describe 'interface state' do
       before do
         cmd = '/sbin/ip -o -d link show eth0'
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
-        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['eth'])
+        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['link']['eth'])
       end
 
       it 'returns interface state' do
@@ -87,7 +87,7 @@ describe 'interface state' do
       before(:each) do
         cmd = '/sbin/ip -o link'
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
-        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['eth_down'])
+        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['link']['eth_down'])
       end
 
       it 'returns if exists in root namespace' do
@@ -105,7 +105,7 @@ describe 'interface state' do
       before(:each) do
         cmd = '/sbin/ip -o -d link show eth4'
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
-        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['eth_down'])
+        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['link']['eth_down'])
       end
 
       it 'returns down state' do
@@ -122,7 +122,7 @@ describe 'interface state' do
       before(:each) do
         cmd = '/sbin/ip  -d link show eth0'
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
-        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['alias'])
+        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['link']['alias'])
       end
 
       it 'returns alias' do
@@ -158,7 +158,7 @@ describe 'interface state' do
       it 'creates vlan' do
         cmd = '/sbin/ip  -d link show eth0.393'
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
-        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['alias'])
+        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['link']['alias'])
         expect(Mixlib::ShellOut).to receive(:new)
           .with('/sbin/ip link add dev eth0.393 link eth0 type vlan id 393').and_return(shellout)
         link.create
@@ -167,14 +167,14 @@ describe 'interface state' do
       it 'checks existence of vlan in netns' do
         cmd = '/sbin/ip -o link'
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
-        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['vlan'])
+        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['link']['vlan'])
         expect(link.exist_in_netns?).to be_truthy
       end
 
       it 'checks existence of vlan' do
         cmd = '/sbin/ip -o link'
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
-        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['vlan'])
+        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['link']['vlan'])
         expect(link.exist?).to be_truthy
       end
 
@@ -200,7 +200,7 @@ describe 'interface state' do
       it 'checks existence of veth in netns' do
         cmd = '/sbin/ip netns exec aside /sbin/ip -o link'
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
-        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['veth'])
+        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['link']['veth'])
         expect(link.exist_in_netns?).to be_truthy
       end
 

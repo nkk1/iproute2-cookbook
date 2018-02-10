@@ -109,7 +109,7 @@ module IPRoute
     end
 
     def shellout(cmd)
-      IPRoute.shellout(cmd)
+      IPRoute::Utils.shellout(cmd)
     end
   end
 end

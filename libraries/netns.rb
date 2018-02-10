@@ -21,7 +21,7 @@ module IPRoute
     private
 
     def shellout(cmd)
-      IPRoute.shellout(cmd)
+      IPRoute::Utils.shellout(cmd)
     end
   end
 end

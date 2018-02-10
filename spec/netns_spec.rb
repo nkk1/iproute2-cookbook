@@ -15,7 +15,7 @@ describe 'interface state' do
       before do
         cmd = '/sbin/ip netns exec netns /sbin/ip -o -d link show eth0'
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
-        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['eth'])
+        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['link']['eth'])
       end
 
       it 'returns interface state' do
@@ -76,7 +76,7 @@ describe 'interface state' do
       before(:each) do
         cmd = '/sbin/ip -o link'
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
-        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['eth_down'])
+        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['link']['eth_down'])
       end
 
       it 'returns if exists in root namespace' do
@@ -94,7 +94,7 @@ describe 'interface state' do
       before(:each) do
         cmd = '/sbin/ip netns exec netns /sbin/ip -o -d link show eth4'
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
-        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['eth_down'])
+        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['link']['eth_down'])
       end
 
       it 'returns down state' do
@@ -111,7 +111,7 @@ describe 'interface state' do
       before(:each) do
         cmd = '/sbin/ip netns exec netns /sbin/ip  -d link show eth0'
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
-        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['alias'])
+        allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['link']['alias'])
       end
 
       it 'returns alias' do
