@@ -71,6 +71,12 @@ describe 'interface state' do
         link.mac = 'a:b:c:d:e:f'
       end
 
+      it 'deletes interface' do
+        expect(Mixlib::ShellOut).to receive(:new)
+          .with('/sbin/ip link delete dev eth0').and_return(shellout)
+        link.delete
+      end
+
       it 'raises when creating interface' do
         expect { link.create }.to raise_error(RuntimeError, /Not implemented/)
       end
@@ -138,6 +144,12 @@ describe 'interface state' do
           .with('/sbin/ip link add dev eth0 type dummy').and_return(shellout)
         link.create
       end
+
+      it 'deletes dummy link' do
+        expect(Mixlib::ShellOut).to receive(:new)
+          .with('/sbin/ip link delete dev eth0 type dummy').and_return(shellout)
+        link.delete
+      end
     end
 
     describe 'vlan' do
@@ -165,6 +177,12 @@ describe 'interface state' do
         allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['vlan'])
         expect(link.exist?).to be_truthy
       end
+
+      it 'deletes vlan link' do
+        expect(Mixlib::ShellOut).to receive(:new)
+          .with('/sbin/ip link delete dev eth0.393 type vlan').and_return(shellout)
+        link.delete
+      end
     end
 
     describe 'veth' do
@@ -184,6 +202,12 @@ describe 'interface state' do
         allow(Mixlib::ShellOut).to receive(:new).with(cmd).and_return(shellout)
         allow(shellout).to receive(:stdout).and_return(IPRoute.testcases['veth'])
         expect(link.exist_in_netns?).to be_truthy
+      end
+
+      it 'deletes veth link' do
+        expect(Mixlib::ShellOut).to receive(:new)
+          .with('/sbin/ip netns exec aside /sbin/ip link delete dev veth1 type veth').and_return(shellout)
+        link.delete
       end
     end
   end

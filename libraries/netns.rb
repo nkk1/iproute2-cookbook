@@ -5,7 +5,7 @@ module IPRoute
     end
 
     def exist?
-      netnses = shellout('ip netns').lines.map(&:chomp!)
+      netnses = shellout('ip netns').lines.map { |l| l.chomp.split[0] }
       return true if netnses.include?(@name)
       false
     end

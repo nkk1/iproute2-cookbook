@@ -83,9 +83,23 @@ ip_link 'dumb0' do
 end
 ```
 
+Action :delete
+
+```
+ip_link 'nsdeltest0' do
+  type 'dummy'
+  netns 'vpn'
+  state 'down'
+  action :delete
+end
+```
+
+Note: Parameter `state 'down'` downs the interface before removing
+
 #### VLAN
 ---
 Action :add (default)
+
 ```
 ip_link 'vlan.200' do
   link 'nsvlan0'
@@ -98,6 +112,18 @@ ip_link 'vlan.200' do
   alias_name 'i am vlan in netns'
 end
 ```
+
+Action :delete
+
+ip_link 'nsvlan.del0' do
+  action :add
+  netns 'vlanns'
+  link 'nsvlandel0'
+  type 'vlan'
+  state 'up'
+  id 200
+  alias_name 'i should exist in netns'
+end
 
 #### VETH PAIR
 ---
@@ -123,6 +149,7 @@ ip_link 'nsveth2' do
   alias_name 'i am the other end'
 end
 ```
+
 
 
 

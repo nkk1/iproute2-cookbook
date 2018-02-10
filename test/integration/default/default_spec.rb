@@ -28,11 +28,19 @@ if command('/sbin/ip netns').exit_status == 0
     its('stdout') { should match /qlen 12345/ }
   end
 
+  describe command('/sbin/ip netns exec vpn ip link show nsdeltest0') do
+    its('stderr') { should match /Device "nsdeltest0" does not exist/ }
+  end
+
   describe command('/sbin/ip netns exec vlanns ip link show nsvlantest') do
     its('stdout') { should match /mtu 1400/ }
     its('stdout') { should match /ether aa:00:aa:00:aa:00/ }
     its('stdout') { should match /qlen 300/ }
     its('stdout') { should match /alias i am vlan in netns/ }
+  end
+
+  describe command('/sbin/ip netns exec vlanns /sbin/ip link show nsvlan.del0') do
+    its('stdout') { should match /i should exist in netns/ }
   end
 
   describe command('/sbin/ip netns exec aside ip link show') do
@@ -44,6 +52,22 @@ if command('/sbin/ip netns').exit_status == 0
     its('stdout') { should match /nsveth2@/ }
     its('stdout') { should match /alias i am the other end/ }
   end
+end
+
+describe command('/sbin/ip link show vlan.del0') do
+  its('stdout') { should match /i should exist/ }
+end
+
+describe interface('vethdeltest1') do
+  it { should_not exist }
+end
+
+describe interface('vethdeltest2') do
+  it { should_not exist }
+end
+
+describe interface('deltest') do
+  it { should_not exist }
 end
 
 describe interface('nsvpn0') do
