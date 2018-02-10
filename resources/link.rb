@@ -20,7 +20,7 @@ property :peer, String
 default_action :add
 
 load_current_value do |current|
-  link = IPRoute.get_link_object(current)
+  link = IPRoute::Utils.get_link_object(current)
   current_value_does_not_exist! unless link.exist_in_netns?
   mtu link.mtu
   state link.state
@@ -32,13 +32,13 @@ end
 action :add do
   msg = "add link #{new_resource.device}"
   link = nil
-  link = IPRoute.get_link_object(new_resource)
+  link = IPRoute::Utils.get_link_object(new_resource)
   converge_by(msg) { link.create } unless link.exist_in_netns? || link.exist?
   action_set
 end
 
 action :set do
-  link = IPRoute.get_link_object(new_resource)
+  link = IPRoute::Utils.get_link_object(new_resource)
   if property_is_set?(:netns)
     converge_by("add link #{new_resource.device} to netns #{new_resource.netns}") \
       { link.add_to_netns } unless link.exist_in_netns?
@@ -51,7 +51,7 @@ action :set do
 end
 
 action :down do
-  link = IPRoute.get_link_object(new_resource)
+  link = IPRoute::Utils.get_link_object(new_resource)
   if link.exist_in_netns?
     link = IPRoute::Link.new(new_resource.device, new_resource.netns)
     converge_by("ip link set dev #{new_resource.device} down") { link.down } unless link.down?
@@ -59,7 +59,7 @@ action :down do
 end
 
 action :delete do
-  link = IPRoute.get_link_object(new_resource)
+  link = IPRoute::Utils.get_link_object(new_resource)
   converge_if_changed(:state) { link.state = new_resource.state } if property_is_set?(:state)
   link.delete
 end
