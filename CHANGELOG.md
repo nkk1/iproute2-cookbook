@@ -45,3 +45,6 @@
 * [**Karthik**](https://github.com/karthik-altiscale):
   Delete action for links
 
+## 1.0.0
+* [**Karthik**](https://github.com/karthik-altiscale):
+  A fully working IP Addr and IP Link (vlan, netns)

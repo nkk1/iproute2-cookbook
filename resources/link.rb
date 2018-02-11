@@ -11,6 +11,7 @@ property :qlen, Integer
 property :link, String
 property :id, Integer
 property :peer, String
+property :ip, [String, Array]
 
 # property :promisc, [true, false]
 # property :allmulticast, [true, false]
@@ -48,6 +49,13 @@ action :set do
   converge_if_changed(:state) { link.state = new_resource.state } if property_is_set?(:state)
   converge_if_changed(:alias_name) { link.alias = new_resource.alias_name } if property_is_set?(:alias_name)
   converge_if_changed(:qlen) { link.qlen = new_resource.qlen } if property_is_set?(:qlen)
+  if property_is_set?(:ip)
+    ips = IPRoute::Utils.format_ip(new_resource.ip)
+    ips.each do |ip|
+      addr = IPRoute::Address.new(new_resource.device, ip, new_resource.netns)
+      converge_by("Add #{ip} to #{new_resource.device}") { addr.add } unless addr.exist?
+    end
+  end
 end
 
 action :down do

@@ -66,6 +66,7 @@ ip_link 'dumb0' do
   mac 'aa:bb:cc:00:11:22'
   alias_name 'i am alias of nsalias0'
   qlen 12345
+  ip '1.1.1.1/28'
 end
 ```
 
@@ -80,6 +81,7 @@ ip_link 'dumb0' do
   mac 'aa:bb:cc:00:11:22'
   alias_name 'i am alias of nsalias0'
   qlen 12345
+  ip '1.1.1.1/28'  
 end
 ```
 
@@ -110,6 +112,7 @@ ip_link 'vlan.200' do
   mac 'aa:00:aa:00:aa:00'
   qlen 300
   alias_name 'i am vlan in netns'
+  ip ['1.1.1.1/28', '2.2.2.2']
 end
 ```
 
@@ -120,7 +123,7 @@ ip_link 'nsvlan.del0' do
   netns 'vlanns'
   link 'nsvlandel0'
   type 'vlan'
-  state 'up'
+  state 'down'
   id 200
   alias_name 'i should exist in netns'
 end
@@ -138,6 +141,7 @@ ip_link 'nsveth1' do
   peer 'nsveth2'
   netns 'aside'
   alias_name 'i am one end'
+  ip Array.new(4) { |i| "169.254.0.#{i + 1}" }
 end
 ```
 
@@ -150,9 +154,6 @@ ip_link 'nsveth2' do
 end
 ```
 
-
-
-
 Properties
 * type: can be ..... <#todo>
 * state: can be up or down, default is *up*
@@ -164,3 +165,42 @@ Properties
 * link: link on which vlan to be created. used with *vlan* type
 * id: vlan id. used with *vlan* type
 * peer: used with *veth* type 
+* ip: Add ip address(es) to the link
+
+
+## ip-addr
+---
+
+Action :add (default)
+
+```
+ip_addr 'eth0.100' do
+  action :add
+  ip ['1.1.1.1/32', '2.2.2.2/32']
+end
+```
+
+Action :delete
+
+```
+ip_addr 'eth0.100' do
+  action :add
+  ip '2.2.2.2/32'
+end
+```
+
+Action :flush
+
+```
+ip_addr 'eth0.100' do
+  action :flush
+end
+```
+
+Action :flush_and_set
+```
+ip_addr 'eth0.100' do
+  action :flush_and_set
+  ip '192.168.1.2/24'
+end
+```
