@@ -23,5 +23,14 @@ module IPRoute
         IPRoute::Link.new(new_resource.device, new_resource.netns)
       end
     end
+
+    def self.format_ip(addrs)
+      ip_addrs = addrs.is_a?(Array) ? addrs : [addrs]
+      ip_addrs.map { |i| i.include?('/') ? i : i + '/32' }
+    end
+
+    def self.get_device_ips(device, netns)
+      IPRoute::Address.new(device, [], netns).ips
+    end
   end
 end
