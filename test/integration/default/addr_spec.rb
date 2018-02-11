@@ -42,7 +42,7 @@ describe command('/sbin/ip -o -d addr show addrdelveth1') do
 end
 
 describe command('/sbin/ip -o -d addr s dev addrflush0') do
-  its('stdout') { should match /^$/ }
+  its('stdout') { should_not match /inet / }
 end
 
 if command('/sbin/ip netns').exit_status == 0
