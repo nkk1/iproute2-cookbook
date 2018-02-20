@@ -48,3 +48,7 @@
 ## 1.0.0
 * [**Karthik**](https://github.com/karthik-altiscale):
   A fully working IP Addr and IP Link (vlan, netns)
+
+## 1.0.1
+* [**Karthik**](https://github.com/karthik-altiscale):
+  matchers for chefspec
