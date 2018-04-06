@@ -4,9 +4,9 @@ dist: trusty
 addons:
   apt:
     sources:
-      - chef-current-trusty
+      - chef-stable-trusty
     packages:
-      - chefdk-13.7.4
+      - chefdk
 
 install: echo "skip bundle install"
 
