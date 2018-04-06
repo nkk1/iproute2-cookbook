@@ -6,7 +6,7 @@ addons:
     sources:
       - chef-current-trusty
     packages:
-      - chefdk
+      - chefdk-13.7.4
 
 install: echo "skip bundle install"
 
