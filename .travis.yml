@@ -41,3 +41,4 @@ matrix:
       env:
         - UNIT_AND_LINT=1
         - CHEF_FIPS=''
+        - OMNIBUS_CHEF_VERSION=14.0.48
