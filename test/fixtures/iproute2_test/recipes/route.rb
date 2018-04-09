@@ -18,7 +18,7 @@ ip_route '10.12.12.0/24' do
   mtu 9001
   mtu_lock true
   window 1024
-  rtt '12s'
+  rtt '12'
 end
 
 ip_route '10.12.12.0/24' do
@@ -31,7 +31,7 @@ ip_route '10.12.12.0/24' do
   mtu 9001
   mtu_lock true
   window 1024
-  rtt '12s'
+  rtt '12'
   scope 253
 end
 
