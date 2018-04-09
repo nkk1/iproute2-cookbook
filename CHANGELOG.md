@@ -52,3 +52,7 @@
 ## 1.0.1
 * [**Karthik**](https://github.com/karthik-altiscale):
   matchers for chefspec
+
+## 1.0.2
+* [**Karthik**](https://github.com/karthik-altiscale):
+  Chef guys removed property_is_set?
