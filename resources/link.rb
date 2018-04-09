@@ -25,7 +25,7 @@ load_current_value do |current|
   current_value_does_not_exist! unless link.exist_in_netns?
   mtu link.mtu
   state link.state
-  mac link.mac if property_is_set?(:mac)
+  mac link.mac if current.mac
   alias_name link.alias
   qlen link.qlen
 end
@@ -40,16 +40,16 @@ end
 
 action :set do
   link = IPRoute::Utils.get_link_object(new_resource)
-  if property_is_set?(:netns)
+  if new_resource.netns
     converge_by("add link #{new_resource.device} to netns #{new_resource.netns}") \
       { link.add_to_netns } unless link.exist_in_netns?
   end
-  converge_if_changed(:mtu) { link.mtu = new_resource.mtu } if property_is_set?(:mtu)
-  converge_if_changed(:mac) { link.mac = new_resource.mac } if property_is_set?(:mac)
+  converge_if_changed(:mtu) { link.mtu = new_resource.mtu } if new_resource.mtu
+  converge_if_changed(:mac) { link.mac = new_resource.mac } if new_resource.mac
   converge_if_changed(:state) { link.state = new_resource.state }
-  converge_if_changed(:alias_name) { link.alias = new_resource.alias_name } if property_is_set?(:alias_name)
-  converge_if_changed(:qlen) { link.qlen = new_resource.qlen } if property_is_set?(:qlen)
-  if property_is_set?(:ip)
+  converge_if_changed(:alias_name) { link.alias = new_resource.alias_name } if new_resource.alias_name
+  converge_if_changed(:qlen) { link.qlen = new_resource.qlen } if new_resource.qlen
+  if new_resource.ip
     ips = IPRoute::Utils.format_ip(new_resource.ip)
     ips.each do |ip|
       addr = IPRoute::Address.new(new_resource.device, ip, new_resource.netns)
@@ -68,6 +68,6 @@ end
 
 action :delete do
   link = IPRoute::Utils.get_link_object(new_resource)
-  converge_if_changed(:state) { link.state = new_resource.state } if property_is_set?(:state)
+  converge_if_changed(:state) { link.state = new_resource.state } if new_resource.state
   link.delete
 end
