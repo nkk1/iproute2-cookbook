@@ -6,6 +6,26 @@ module IPRoute
       @route_params = route_params
     end
 
+    def add
+      create('add')
+    end
+
+    def replace
+      create('replace')
+    end
+
+    def create(action)
+      cmd = ["#{netns_exec}#{ip} route #{action} #{@dest}"]
+
+      %w(dev metric table src realm window rtt via scope).each do |param|
+        cmd << ["#{param} #{@route_params[param]}"] if @route_params[param]
+      end
+
+      cmd << ["mtu #{'lock' if @route_params['mtu_lock']} #{@route_params['mtu']}"] if @route_params['mtu']
+
+      shellout(cmd.join(' '))
+    end
+
     def exist_in_netns?
       !route.empty?
     end

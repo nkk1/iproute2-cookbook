@@ -56,3 +56,7 @@
 ## 1.0.2
 * [**Karthik**](https://github.com/karthik-altiscale):
   Chef guys removed property_is_set?
+
+## 2.0.0
+* [**Karthik**](https://github.com/karthik-altiscale):
+  ip route
