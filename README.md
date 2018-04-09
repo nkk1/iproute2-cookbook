@@ -204,3 +204,25 @@ ip_addr 'eth0.100' do
   ip '192.168.1.2/24'
 end
 ```
+
+## ip-route
+---
+
+Action :add (default)
+
+```
+ip_route '10.12.12.0/24' do
+  netns 'router'
+  via '192.168.3.1'
+  dev 'routetester0'
+  metric 1234
+  table 221
+  src '192.168.3.1'
+  realm  133
+  mtu 9001
+  mtu_lock true
+  window 1024
+  rtt '12s'
+end
+
+```
