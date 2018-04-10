@@ -7,9 +7,14 @@ Provides custom resources for [iproute](http://manpages.ubuntu.com/manpages/trus
 
 * ip-netns
 * ip-link
+* ip-address
+* ip-route
 
 #### todo
-* ip-address | ip-route | ip-rule | ip-tunnel | ip-xfrm | ip-maddress | ip-addrlabel | ip-l2tp | ip-monitor | ip-mroute(8) | ip-neighbour | ip-ntable | ip-tcp_metrics
+* ip-tunnel
+
+#### not planning to do anytime soon
+| ip-rule | ip-xfrm | ip-maddress | ip-addrlabel | ip-l2tp | ip-monitor | ip-mroute(8) | ip-neighbour | ip-ntable | ip-tcp_metrics
 
 ### Platforms
 
@@ -21,7 +26,6 @@ Provides custom resources for [iproute](http://manpages.ubuntu.com/manpages/trus
 ### Chef
 
 - Chef 12.7+
-
 
 ## Recipes
 
