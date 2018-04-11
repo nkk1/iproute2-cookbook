@@ -31,3 +31,35 @@ ip_route '0.0.0.0/0' do
   via '192.168.4.1'
   dev 'defroutetester0'
 end
+
+ip_route '3.3.3.0/24' do
+  via '192.168.4.1'
+  dev 'defroutetester0'
+  netns 'router'
+end
+
+ip_route '3.3.3.0/24' do
+  via '192.168.4.1'
+  dev 'defroutetester0'
+  action :delete
+  netns 'router'
+end
+
+ip_route '3.3.3.0/24' do
+  via '192.168.4.1'
+  dev 'defroutetester0'
+  action :delete
+  netns 'router'
+end
+
+ip_route '3.3.3.0/24' do
+  via '192.168.4.1'
+  dev 'defroutetester0'
+  action :flush
+  netns 'router'
+end
+
+ip_route 'cache' do
+  netns 'router'
+  action :flush
+end

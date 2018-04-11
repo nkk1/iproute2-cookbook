@@ -20,7 +20,22 @@ load_current_value do |_current|
 end
 
 action :add do
-  route = IPRoute::Route.new(new_resource.dest, new_resource.netns, 'via' => new_resource.via,
+  route = get_route_obj(new_resource)
+  route.exist_in_netns? ? route.replace : route.add
+end
+
+action :delete do
+  route = get_route_obj(new_resource)
+  route.delete if route.exist_in_netns?
+end
+
+action :flush do
+  route = get_route_obj(new_resource)
+  route.flush if route.exist_in_netns?
+end
+
+def get_route_obj(new_resource)
+  IPRoute::Route.new(new_resource.dest, new_resource.netns, 'via' => new_resource.via,
                                                                     'dev' => new_resource.dev,
                                                                     'metric' => new_resource.metric,
                                                                     'table' => new_resource.table,
@@ -31,11 +46,4 @@ action :add do
                                                                     'window' => new_resource.window,
                                                                     'rtt' => new_resource.rtt,
                                                                     'scope' => new_resource.scope)
-  route.exist_in_netns? ? route.replace : route.add
-end
-
-action :delete do
-end
-
-action :flush do
 end

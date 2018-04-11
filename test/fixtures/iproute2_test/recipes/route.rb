@@ -42,3 +42,30 @@ ip_route '0.0.0.0/0' do
   via '192.168.34.1'
   dev 'routetester0'
 end
+
+ip_route '3.3.3.0/24' do
+  via '192.168.34.1'
+  dev 'routetester0'
+end
+
+ip_route '3.3.3.0/24' do
+  via '192.168.34.1'
+  dev 'routetester0'
+  action :delete
+end
+
+ip_route '3.3.3.0/24' do
+  via '192.168.34.1'
+  dev 'routetester0'
+  action :delete
+end
+
+ip_route '3.3.3.0/24' do
+  via '192.168.34.1'
+  dev 'routetester0'
+  action :flush
+end
+
+ip_route 'cache' do
+  action :flush
+end

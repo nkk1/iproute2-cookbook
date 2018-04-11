@@ -11,6 +11,10 @@ Provides custom resources for [iproute](http://manpages.ubuntu.com/manpages/trus
 * ip-route
 
 #### todo
+* ip-route
+** ip route add prohibit
+** ip route add nat
+** ip route flush cache
 * ip-tunnel
 
 #### not planning to do anytime soon
@@ -229,4 +233,42 @@ ip_route '10.12.12.0/24' do
   rtt '12s'
 end
 
+```
+
+Action :delete
+
+```
+ip_route '10.12.12.0/24' do
+  action :delete
+  netns 'router'
+  via '192.168.3.1'
+  dev 'routetester0'
+  metric 1234
+  table 221
+  src '192.168.3.1'
+  realm  133
+  mtu 9001
+  mtu_lock true
+  window 1024
+  rtt '12s'
+end
+
+```
+
+Action :flush
+
+```
+ip_route '10.12.12.0/24' do
+  action :flush
+  netns 'router'
+end
+```
+
+flush route cache
+
+```
+ip_route 'cache' do
+  action :flush
+  netns 'router'
+end
 ```
