@@ -36,14 +36,14 @@ end
 
 def get_route_obj(new_resource)
   IPRoute::Route.new(new_resource.dest, new_resource.netns, 'via' => new_resource.via,
-                                                                    'dev' => new_resource.dev,
-                                                                    'metric' => new_resource.metric,
-                                                                    'table' => new_resource.table,
-                                                                    'src' => new_resource.src,
-                                                                    'realm' => new_resource.realm,
-                                                                    'mtu' => new_resource.mtu,
-                                                                    'mtu_lock' => new_resource.mtu_lock,
-                                                                    'window' => new_resource.window,
-                                                                    'rtt' => new_resource.rtt,
-                                                                    'scope' => new_resource.scope)
+                                                            'dev' => new_resource.dev,
+                                                            'metric' => new_resource.metric,
+                                                            'table' => new_resource.table,
+                                                            'src' => new_resource.src,
+                                                            'realm' => new_resource.realm,
+                                                            'mtu' => new_resource.mtu,
+                                                            'mtu_lock' => new_resource.mtu_lock,
+                                                            'window' => new_resource.window,
+                                                            'rtt' => new_resource.rtt,
+                                                            'scope' => new_resource.scope)
 end
