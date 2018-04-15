@@ -60,3 +60,7 @@
 ## 2.0.0
 * [**Karthik**](https://github.com/karthik-altiscale):
   ip route
+
+## 2.0.2
+* [**Karthik**](https://github.com/karthik-altiscale):
+  ip route delete and flush

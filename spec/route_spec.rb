@@ -21,7 +21,7 @@ describe 'interface state' do
 
     let(:route) { IPRoute::Route.new('1.1.1.0/24') }
 
-    describe 'ip route' do
+    describe 'ip route in action' do
       it 'creates route' do
         expect(Mixlib::ShellOut).to receive(:new).with('/sbin/ip route add 1.1.1.0/24')
                                                  .and_return(shellout)
@@ -59,6 +59,45 @@ describe 'interface state' do
           '/sbin/ip route replace 1.1.1.0/24 dev eth0 metric 1234 table 122 src 1.1.1.1 realm 432 window 1024 rtt 12s via 8.8.8.8 scope link'
         ).and_return(shellout)
         route.replace
+      end
+
+      it 'deletes route with options' do
+        route = IPRoute::Route.new('1.1.1.0/24', nil, 'dev' => 'eth0',
+                                                      'metric' => 1234,
+                                                      'table' => 122,
+                                                      'src' => '1.1.1.1',
+                                                      'realm' => 432,
+                                                      'window' => 1024,
+                                                      'rtt' => '12s',
+                                                      'via' => '8.8.8.8',
+                                                      'scope' => 'link')
+        expect(Mixlib::ShellOut).to receive(:new).with(
+          '/sbin/ip route del 1.1.1.0/24 dev eth0 metric 1234 table 122 src 1.1.1.1 realm 432 window 1024 rtt 12s via 8.8.8.8 scope link'
+        ).and_return(shellout)
+        route.delete
+      end
+
+      it 'flushes route with options' do
+        route = IPRoute::Route.new('1.1.1.0/24', nil, 'dev' => 'eth0',
+                                                      'metric' => 1234,
+                                                      'table' => 122,
+                                                      'src' => '1.1.1.1',
+                                                      'realm' => 432,
+                                                      'window' => 1024,
+                                                      'rtt' => '12s',
+                                                      'via' => '8.8.8.8',
+                                                      'scope' => 'link')
+        expect(Mixlib::ShellOut).to receive(:new).with(
+          '/sbin/ip route flush 1.1.1.0/24'
+        ).and_return(shellout)
+        route.flush
+      end
+    end
+
+    describe 'ip route' do
+      it 'returns true existence when dest is cache' do
+        route = IPRoute::Route.new('cache', 'non-sense', 'abs-non-sens')
+        expect(route.exist_in_netns?).to be_truthy
       end
 
       it 'returns false if route does not exist' do

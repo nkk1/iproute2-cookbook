@@ -14,6 +14,14 @@ module IPRoute
       create('replace')
     end
 
+    def delete
+      create('del')
+    end
+
+    def flush
+      shellout("#{netns_exec}#{ip} route flush #{@dest}")
+    end
+
     def create(action)
       cmd = ["#{netns_exec}#{ip} route #{action} #{@dest}"]
 
@@ -27,6 +35,7 @@ module IPRoute
     end
 
     def exist_in_netns?
+      return true if @dest == 'cache'
       !route.empty?
     end
 
