@@ -1,4 +1,9 @@
-source 'https://rubygems.org'
+#
+# Copyright 2017, SAP SE or an SAP affiliate company.
+# All rights reserved.
+#
 
-gem 'stove'
-gem 'community_cookbook_releaser'
+source 'https://rubygems.org/'
+source 'https://gems.service.verticloud.com/'
+
+gem 'alti_pipeline', '~> 4'

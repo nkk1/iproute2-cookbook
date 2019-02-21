@@ -51,3 +51,11 @@ Cheffile.lock
 .vagrant.d/
 .kitchen/
 tags
+
+VERSION
+
+results.xml
+tmp/*
+/cookbooks
+.berkshelf
+graph.png
