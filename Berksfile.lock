@@ -12,7 +12,7 @@ GRAPH
     windows (>= 1.2.2)
   alti_dynatrace_agent_app (0.0.22)
     alti_pipeline_lib (~> 0.0.2)
-  alti_iproute2_app (2.0.2)
+  alti_iproute2_app (2.0.3)
   alti_iproute2_app_test (1.0.0)
     alti_iproute2_app (>= 0.0.0)
   alti_pipeline_lib (0.0.22)
