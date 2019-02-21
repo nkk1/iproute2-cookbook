@@ -20,7 +20,7 @@ if command('/sbin/ip netns').exit_status == 0
   end
 
   describe command('ip netns exec router ip route show table 221') do
-    its('stdout') { should match %r{10.12.12.0/24 via 192.168.3.1 dev routetester10\s+src 192.168.3.1\s+metric 1234 realm 133\s+mtu lock 9001 window 1024} }
+    its('stdout') { should match %r{10.12.12.0/24 via 192.168.3.1 dev routetester10\s+scope link\s+src 192.168.3.1\s+metric 1234 realm 133\s+mtu lock 9001 window 1024 rtt 1ms} }
   end
 
   describe command('/sbin/ip route show to 3.3.3.0/24') do

@@ -1,16 +1,12 @@
-driver:
-  name: vagrant
-
-provisioner:
-  name: chef_zero
-  deprecations_as_errors: true
-
-platforms:
-  - name: centos-6
-  - name: centos-7
-  - name: fedora-latest
+#
+# Copyright 2017, SAP SE or an SAP affiliate company.
+# All rights reserved.
+#
+---
+<% require 'alti_chef_helpers' %>
+<%= AltiChefHelpers.kitchen(platforms: '6.7') %>
 
 suites:
   - name: default
     run_list:
-      - recipe[interface_test]
+      - recipe[alti_iproute2_app_test]

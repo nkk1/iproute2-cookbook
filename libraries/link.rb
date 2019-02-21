@@ -30,11 +30,11 @@ module IPRoute
     end
 
     def up?
-      state == 'up' ? true : false
+      state == 'up'
     end
 
     def down?
-      state == 'down' ? true : false
+      state == 'down'
     end
 
     def state

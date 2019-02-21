@@ -1,7 +1,11 @@
-source 'https://supermarket.chef.io'
+#
+# Copyright 2017, SAP SE or an SAP affiliate company.
+# All rights reserved.
+#
 
-metadata
+require 'alti_chef_helpers'
+AltiChefHelpers.berks(self)
 
 group :integration do
-  cookbook 'iproute2_test', path: 'test/fixtures/iproute2_test'
+  cookbook 'alti_iproute2_app_test', path: 'test/fixtures/alti_iproute2_app_test'
 end

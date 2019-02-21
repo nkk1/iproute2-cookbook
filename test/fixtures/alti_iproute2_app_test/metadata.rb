@@ -1,8 +1,8 @@
-name              'iproute2_test'
+name              'alti_iproute2_app_test'
 maintainer        'karthik'
 maintainer_email  'kumarkarthikn@gmail.com'
 license           'All rights reserved'
-description       'Tests iproute2 cookbook'
+description       'Tests alti_iproute2_app cookbook'
 version           '1.0'
 
-depends 'iproute2'
+depends 'alti_iproute2_app'

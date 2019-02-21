@@ -1,4 +1,9 @@
-require 'chefspec'
+#
+# Copyright 2017, SAP SE or an SAP affiliate company.
+# All rights reserved.
+#
+
+require 'alti_chef_helpers/spec_helper'
 
 module IPRoute
   def self.testcases
