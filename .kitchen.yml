@@ -9,6 +9,7 @@ platforms:
   - name: centos-6
   - name: centos-7
   - name: fedora-latest
+  - name: ubuntu
 
 suites:
   - name: default
