@@ -1,4 +1,3 @@
-
 ip_netns 'aside'
 ip_netns 'zside'
 
